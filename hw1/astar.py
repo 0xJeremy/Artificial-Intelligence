@@ -29,17 +29,17 @@ class Pancakes:
 
 	def check_order(self):
 		for x in range(self.size):
-			if(pancakes.stack[x] < pancakes.stack[x+1]):
+			if(self.stack[x] < self.stack[x+1]):
 				return False
 		return True
 
 	def heuristic(self):
 		cost = 0
-		print("LENGTH: " + str(range(self.size)))
 		for x in range(self.size):
 			diff = abs(self.stack[x] - self.stack[x+1])
 			if(diff > 1):
 				cost += 1
+		self.forward_cost = cost
 		return cost
 
 	def flip(self, location):
@@ -52,54 +52,49 @@ class Pancakes:
 			x += 1
 			location -= 1
 
-def astar(pancakes):
-	open_list = pQueue()
-	open_list.put(pancakes, pancakes.total_cost)
+	def update_costs(self):
+		self.back_cost += 1
+		self.forward_cost = self.heuristic()
+		self.total_cost = self.back_cost + self.forward_cost
 
-	closed_list = set()
+def astar(pancakes):
+	frontier = pQueue()
+	frontier.put(pancakes, pancakes.total_cost)
+
+	visited = {}
+	visited[pancakes] = None
+
+	cost = {}
+	cost[pancakes] = 0
 
 	G = nx.Graph()
 	G.add_node(pancakes)
 
-	while(not open_list.empty()):
-		current = open_list.get()
-		closed_list.add(current)
+	while(not frontier.empty()):
+		current = frontier.get()
+
+		if(current.check_order()):
+			break
 
 		for x in range(current.size):
-			temp = copy.deepcopy(pancakes)
-			temp.back_cost += 1
+			temp = copy.deepcopy(current)
+			temp.update_costs()
+			print("Back Cost: " + str(temp.back_cost))
 			temp.flip(x)
-			if(current.check_order):
-				break
-			if(temp in closed_list):
+			if(temp in visited):
 				continue
 			G.add_node(temp)
 			G.add_edge(current, temp)
 
-	return closed_list
+		for x in G.neighbors(current):
+			temp_cost = x.total_cost
+			print("Temp Cost: " + str(temp_cost))
+			if x not in cost or temp_cost < cost[x]:
+				cost[x] = temp_cost
+				frontier.put(x, x.total_cost)
+				visited[x] = current
 
-
-
-	# open_list = Queue(maxsize=0)
-	# closed_list = Queue(maxsize=0)
-	# G = nx.Graph()
-
-	# G.add_node(pancakes)
-	# open_list.put(pancakes)
-
-	# while(!open_list.empty()):
-	# 	current = open_list.get()
-
-	# 	if(current.check_order):
-	# 		return current
-
-	# 	for x in range(len(current.size)):
-	# 		temp = copy.deepcopy(p)
-	# 		temp.back_cost += 1
-	# 		temp.flip(x)
-	# 		G.add_node(temp)
-	# 		G.add_edge(current, temp)
-
+	return visited
 
 def main():
 	stack = [3, 2, 5, 1, 6, 4, 7]
