@@ -4,8 +4,6 @@ import networkx as nx
 import heapq
 import copy
 
-NUM_PANCAKES = 5
-
 class pQueue:
 	def __init__(self):
 		self.elements = []
@@ -43,7 +41,6 @@ class Pancakes:
 		return cost
 
 	def flip(self, location):
-		location -= 1
 		temp, x = 0, 0
 		while(x < location):
 			temp = self.stack[x]
@@ -60,7 +57,7 @@ class Pancakes:
 	def print_stack(self):
 		print_string = "Stack: "
 		for i in range(len(self.stack)):
-			print_string += str(self.stack[i])
+			print_string += str(self.stack[i]) + " "
 		print(print_string)
 
 def astar(pancakes):
@@ -86,6 +83,8 @@ def astar(pancakes):
 		current = frontier.get()
 
 		if(current.check_order()):
+			for x in visited:
+				x.print_stack()
 			print("\nFINAL: ")
 			current.print_stack()
 			return visited
@@ -110,12 +109,8 @@ def astar(pancakes):
 	return visited
 
 def main():
-	#stack = [3, 2, 5, 1, 6, 4, 7]
-	stack = [1, 2, 3, 4, 5, 6, 7, 8]
-	#stack = [3, 2, 1, 4]
+	stack = [3, 2, 5, 1, 6, 4, 7]
 	p = Pancakes(stack, 0)
-	# print("EXPECTED: 5")
-	# print("          " + str(p.forward_cost))
 	visited = astar(p)
 	# for i in visited:
 	# 	i.print_stack()
