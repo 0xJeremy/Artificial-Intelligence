@@ -77,24 +77,21 @@ def astar(pancakes):
 	G = nx.Graph()
 	G.add_node(pancakes)
 
-	counter = 0
-
 	while(not frontier.empty()):
 		current = frontier.get()
 
 		if(current.check_order()):
-			# print("\nFINAL: ")
-			# current.print_stack()
 			path = [current]
+
 			while current in visited:
 				current = visited[current]
 				if(current == None):
 					break
 				path.append(current)
+				
 			path.reverse()
 			return path
 
-		counter += 1
 		for x in range(current.size):
 			temp = copy.deepcopy(current)
 			temp.update_costs()
