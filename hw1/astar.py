@@ -83,11 +83,16 @@ def astar(pancakes):
 		current = frontier.get()
 
 		if(current.check_order()):
-			for x in visited:
-				x.print_stack()
-			print("\nFINAL: ")
-			current.print_stack()
-			return visited
+			# print("\nFINAL: ")
+			# current.print_stack()
+			path = [current]
+			while current in visited:
+				current = visited[current]
+				if(current == None):
+					break
+				path.append(current)
+			path.reverse()
+			return path
 
 		counter += 1
 		for x in range(current.size):
@@ -99,12 +104,11 @@ def astar(pancakes):
 			G.add_node(temp)
 			G.add_edge(current, temp)
 
-		for x in G.neighbors(current):
-			temp_cost = x.total_cost
-			if x not in cost or temp_cost < cost[x]:
-				cost[x] = temp_cost
-				frontier.put(x, x.total_cost)
-				visited[x] = current
+			temp_cost = temp.total_cost
+			if temp not in cost or temp_cost < cost[temp]:
+				cost[temp] = temp_cost
+				frontier.put(temp, temp.total_cost)
+				visited[temp] = current
 
 	return visited
 
@@ -112,8 +116,12 @@ def main():
 	stack = [3, 2, 5, 1, 6, 4, 7]
 	p = Pancakes(stack, 0)
 	visited = astar(p)
-	# for i in visited:
-	# 	i.print_stack()
+	print("")
+	for i in visited:
+		i.print_stack()
+	print("")
+	print("FINAL: ")
+	visited[len(stack)-2].print_stack()
 
 
 if __name__=='__main__':
