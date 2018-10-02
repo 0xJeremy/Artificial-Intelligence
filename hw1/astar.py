@@ -65,6 +65,8 @@ def astar(pancakes):
 	print("Initial List: ")
 	pancakes.print_stack()
 
+	print("\n=====Sorting Started=====")
+
 	frontier = pQueue()
 	frontier.put(pancakes, pancakes.total_cost)
 
@@ -81,6 +83,7 @@ def astar(pancakes):
 		current = frontier.get()
 
 		if(current.check_order()):
+			total_cost = current.total_cost
 			path = [current]
 
 			while current in visited:
@@ -90,7 +93,7 @@ def astar(pancakes):
 				path.append(current)
 				
 			path.reverse()
-			return path
+			return path, G.number_of_nodes(), total_cost
 
 		for x in range(current.size):
 			temp = copy.deepcopy(current)
@@ -112,13 +115,16 @@ def astar(pancakes):
 def main():
 	stack = [3, 2, 5, 1, 6, 4, 7]
 	p = Pancakes(stack, 0)
-	visited = astar(p)
+	visited, num_nodes, total_cost = astar(p)
 	print("")
 	for i in visited:
+		if(i == visited[len(visited)-1]):
+			print("\nFinal Stack:")
 		i.print_stack()
-	print("")
-	print("FINAL: ")
-	visited[len(stack)-2].print_stack()
+	print("\n=====Sorting Finished=====\n")
+
+	print("Number of Nodes: " + str(num_nodes))
+	print("Total Flips: " + str(total_cost))
 
 
 if __name__=='__main__':
