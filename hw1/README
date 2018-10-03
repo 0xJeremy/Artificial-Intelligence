@@ -10,7 +10,7 @@ Usage:
 
 To modify input:
 	To modify the input of the original pancake stack, edit the array defined 
-	in line 130 of astar.py
+	in line 148 of astar.py
 
 1. Define the problem as a searching problem.
 The pancake problem can be defined as a searching problem by assuming that the
@@ -31,3 +31,8 @@ in the class function "heuristic".
 
 4. Implement an A* algorithm in your language of preference.
 See astar.py for the A* implementation.
+
+Extra Credit:
+In dijkstra.py is an implementation of Dikjstra's algorithm solving the same
+problem. While it still works, the number of nodes visited is exponentially
+higher than an A* algorithm.

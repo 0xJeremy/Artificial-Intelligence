@@ -74,8 +74,8 @@ class Pancakes:
 			print_string += str(self.stack[i]) + " "
 		print(print_string)
 
-# A* algorithm running on pancakes
-def astar(pancakes):
+# Dijkstra algorithm running on pancakes
+def dijkstra(pancakes):
 	print("Running A* on list...")
 	print("Initial List: ")
 	pancakes.print_stack()
@@ -84,7 +84,7 @@ def astar(pancakes):
 
 	# Initializes pQueue (frontier)
 	frontier = pQueue()
-	frontier.put(pancakes, pancakes.total_cost)
+	frontier.put(pancakes, pancakes.back_cost)
 
 	# Defines the variable for the path
 	visited = {}
@@ -107,7 +107,7 @@ def astar(pancakes):
 		# Checks if solution is found
 		if(current.check_order()):
 
-			total_cost = current.total_cost
+			total_cost = current.back_cost
 			path = [current]
 
 			# Gets path to solution
@@ -132,10 +132,10 @@ def astar(pancakes):
 
 			# Checks if child already exists and if new
 			#		path is shorter than previous.
-			temp_cost = temp.total_cost
+			temp_cost = temp.back_cost
 			if temp not in cost or temp_cost < cost[temp]:
 				cost[temp] = temp_cost
-				frontier.put(temp, temp.total_cost)
+				frontier.put(temp, temp.back_cost)
 				visited[temp] = current
 
 	return visited
@@ -150,7 +150,7 @@ def main():
 
 	# Creates a new pancake and runs A*
 	p = Pancakes(stack, 0)
-	visited, num_nodes, total_cost = astar(p)
+	visited, num_nodes, total_cost = dijkstra(p)
 	print("")
 
 	# Prints pancake flips
