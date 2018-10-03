@@ -1,0 +1,33 @@
+/*********************************
+           A.I. PS 1
+*********************************/
+
+Usage:
+	Required modules:
+		Networkx: $ pip install networkx
+	Running:
+		$ python astar.py
+
+To modify input:
+	To modify the input of the original pancake stack, edit the array defined 
+	in line 130 of astar.py
+
+1. Define the problem as a searching problem.
+The pancake problem can be defined as a searching problem by assuming that the
+initial state acts as the starting node in a graph, and all the connected 
+nodes are those that are flipped states of the original. The graph is 
+generated during runtime, inside the A* algorithm, and assigned costs 
+simultaneously.
+
+2. Define a possible cost function (backward cost).
+The backward cost can be the number of flips that have occured on a stack of
+pancakes. In the A* program, this is represented as an instance variable of
+the pancake class.
+
+3. Define a possible heuristic function (forward cost).
+The forward cost is the same as defined by Malte Helmert in his paper
+"Landmark Heuristics for the Pancake Problem". This algorithm is implemented
+in the class function "heuristic".
+
+4. Implement an A* algorithm in your language of preference.
+See astar.py for the A* implementation.
