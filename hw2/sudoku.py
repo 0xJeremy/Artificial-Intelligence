@@ -1,10 +1,13 @@
 import itertools
 import sys
+import time
 
 characters = 'ABCDEFGHI'
 numbers = '123456789'
 
-#Helper Functions
+#***************************************************
+#                 Helper Functions
+#***************************************************
 def constraint(xi, xj):
 	return xi != xj
 
@@ -26,6 +29,23 @@ def conflicts(sudoku, var, val):
 			count += 1
 	return count
 
+def print_initial_board(board):
+	string = ''
+	count = 1
+	for x in board:
+		string = string + x + ' '
+		if(count % 9 == 0):
+			string += '\n'
+		elif(count % 3 == 0):
+			string += '|'
+		if(count % 27 == 0 and count != 81):
+			string += '-------------------\n'
+		count += 1
+	print(string)
+
+#***************************************************
+#                 Sudoku Class
+#***************************************************
 class Sudoku:
 
 	def __init__(self, board):
@@ -50,8 +70,7 @@ class Sudoku:
 		self.populate()
 
 	def constrain(self):
-		x = (
-			[combine(characters, number) for number in numbers] +
+		x = ([combine(characters, number) for number in numbers] +
 			[combine(character, numbers) for character in characters] +
 			[combine(character, number) for character in ('ABC', 'DEF', 'GHI') for number in ('123', '456', '789')])
 		for i in x:
@@ -105,6 +124,9 @@ class Sudoku:
 					self.domains[neighbor].remove(value)
 					self.pruned[var].append((neighbor, value))
 
+#***************************************************
+#                   AC3 Class
+#***************************************************
 class ac3:
 	def __init__(self, board):
 		self.sudoku = Sudoku(board)
@@ -180,34 +202,29 @@ class ac3:
 			count += 1
 		print(string)
 
-def print_initial_board(board):
-	string = ''
-	count = 1
-	for x in board:
-		string = string + x + ' '
-		if(count % 9 == 0):
-			string += '\n'
-		elif(count % 3 == 0):
-			string += '|'
-		if(count % 27 == 0 and count != 81):
-			string += '-------------------\n'
-		count += 1
-	print(string)
-
 def main():
+
+	# SWITCH BETWEEN SUDOKU BOARDS HERE ---------------------------------------------------------
+
 	# board = '608702100400010002025400000701080405080000070509060301000006750200090008006805203'
-	board = '070042000000008610390000007000004009003000700500100000800000076054800000000610050'
+	# board = '070042000000008610390000007000004009003000700500100000800000076054800000000610050'
+	board = '800000000003600000070090200050007000000045700000100030001000068008500010090000400'
 
-
+	#--------------------------------------------------------------------------------------------
 
 	print("Initial Board:")
 	print_initial_board(board)
 
 	solved_board = ac3(board)
+
+	start_time = time.time()
 	solved_board.ac3_solve()
+	end_time = time.time()
 
 	print("Final Board:")
 	solved_board.print_board()
+
+	print("Solve Time: " + str(end_time - start_time) + " seconds")
 
 
 if __name__=='__main__':
