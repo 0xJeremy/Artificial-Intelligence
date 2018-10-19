@@ -4,9 +4,9 @@
 
 Usage:
 	Required modules:
-		Networkx: $ pip install networkx
+		Networkx: ~/$ pip install networkx
 	Running:
-		$ python astar.py
+		~/$ python astar.py
 
 To modify input:
 	To modify the input of the original pancake stack, edit the array defined 
@@ -36,3 +36,9 @@ Extra Credit:
 In dijkstra.py is an implementation of Dikjstra's algorithm solving the same
 problem. While it still works, the number of nodes visited is exponentially
 higher than an A* algorithm.
+
+Usage:
+	Required modules:
+		Networkx: ~/$ pip install networkx
+	Running:
+		~/$ python dijkstra.py

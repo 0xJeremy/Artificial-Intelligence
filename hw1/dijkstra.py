@@ -76,7 +76,7 @@ class Pancakes:
 
 # Dijkstra algorithm running on pancakes
 def dijkstra(pancakes):
-	print("Running A* on list...")
+	print("Running Dijkstra on list...")
 	print("Initial List: ")
 	pancakes.print_stack()
 

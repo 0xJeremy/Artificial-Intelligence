@@ -107,7 +107,7 @@ def astar(pancakes):
 		# Checks if solution is found
 		if(current.check_order()):
 
-			total_cost = current.total_cost
+			total_cost = current.back_cost
 			path = [current]
 
 			# Gets path to solution
