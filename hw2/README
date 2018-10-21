@@ -1,0 +1,35 @@
+/*********************************
+           A.I. PS 2
+*********************************/
+
+Usage:
+	Required modules:
+		Itertools: ~/$ pip install itertools
+	Running:
+		~/$ python sudoku.py
+
+To modify input:
+	The modify the input of the original sudoku board, change the 
+	'board' variable directly under the start of the main function. 
+	For any square that is blank, enter 0. Three defaults have 
+	already been entered: the easy and hard boards provided in the 
+	assignment, and another more difficult board found on the 
+	internet.
+
+Solving a sudoku puzzle has been defined in this program as a 
+constraint satisfaction problem. This program makes use of the AC-3 
+algorithm (Arc Consistency 3 algorithm). The heuristics it 
+implements are Backtracking and Forward Checking.
+
+Resources Used:
+- Artificial Intelligence: A Modern Approach
+	- https://www.cin.ufpe.br/~tfl2/artificial-intelligence-modern-ap
+	proach.9780131038059.25368.pdf
+	- http://aima.cs.berkeley.edu/
+- Blog Post by Sandipan Dey
+	- https://sandipanweb.wordpress.com/2017/03/17/solving-sudoku-as-
+	a-constraint-satisfaction-problem-using-constraint-propagation-wi
+	th-arc-consistency-checking-and-then-backtracking-with-minimum-re
+	maning-value-heuristic-and-forward-checking/
+- AC-3 Algorithm
+	- https://en.wikipedia.org/wiki/AC-3_algorithm
