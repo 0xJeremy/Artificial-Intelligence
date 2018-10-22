@@ -2,8 +2,11 @@ import itertools
 import sys
 import time
 
-characters = 'ABCDEFGHI'
-numbers = '123456789'
+# Define constants
+character_domains = 'ABCDEFGHI'
+char_combo = ('ABC', 'DEF', 'GHI')
+number_domains = '123456789'
+num_combo = ('123', '456', '789')
 
 #***************************************************
 #                 Helper Functions
@@ -15,20 +18,18 @@ def combine(x, y):
 
 # Finds all permutations of a combination passed into it
 def permute(combination):
-	result = list()
+	result = []
 	for x in range(0, len(combination) + 1):
 		if(x == 2):
 			for subset in itertools.permutations(combination, x):
 				result.append(subset)
 	return result
 
-# Returns the number of conflicts in a sudoku board
-def conflicts(sudoku, var, val):
-	count = 0
-	for n in sudoku.neighbors[var]:
-		if len(sudoku.domains[n]) > 1 and val in sudoku.domains[n]:
-			count += 1
-	return count
+# Returns the constraint for a Sudoku board
+def get_contraint():
+	return ([combine(character_domains, i) for i in number_domains] +
+			[combine(i, number_domains) for i in character_domains] +
+			[combine(i, j) for i in char_combo for j in num_combo])
 
 # Function to print the initial state of the board
 def print_initial_board(board):
@@ -68,23 +69,21 @@ class Sudoku:
 	#	based on the board passed to it
 	def initialize(self, board):
 		game = list(board)
-		self.variables = combine(characters, numbers)
-		for i, v in enumerate(self.variables):
-			if(game[i] == '0'):
+		self.variables = combine(character_domains, number_domains)
+		for x, v in enumerate(self.variables):
+			if(game[x] == '0'):
 				self.domains[v] = list(range(1, 10))
 				self.pruned[v] = []
 			else:
-				self.domains[v] = [int(game[i])]
-				self.pruned[v] = [int(game[i])]
+				self.domains[v] = [int(game[x])]
+				self.pruned[v] = [int(game[x])]
 		self.constrain()
 		self.populate()
 
 	# Defines and sets the constraints of the board
 	def constrain(self):
-		x = ([combine(characters, number) for number in numbers] +
-			[combine(character, numbers) for character in characters] +
-			[combine(character, number) for character in ('ABC', 'DEF', 'GHI') for number in ('123', '456', '789')])
-		for i in x:
+		constraints = get_contraint()
+		for i in constraints:
 			combinations = permute(i)
 			for j in combinations:
 				if([j[0], j[1]] not in self.constraints):
@@ -115,7 +114,7 @@ class Sudoku:
 	# Assigns a value to a specific position
 	def assign(self, var, value, assignment):
 		assignment[var] = value
-		self.forward_check(var, value, assignment)
+		self.check_forward(var, value, assignment)
 
 	# Unassigns a value to a specific position
 	def unassign(self, var, assignment):
@@ -126,7 +125,7 @@ class Sudoku:
 			del assignment[var]
 
 	# Checks if domains will be altered due to an assignment
-	def forward_check(self, var, value, assignment):
+	def check_forward(self, var, value, assignment):
 		for neighbor in self.neighbors[var]:
 			if neighbor not in assignment:
 				if value in self.domains[neighbor]:
@@ -137,7 +136,7 @@ class Sudoku:
 #                   AC3 Class
 #***************************************************
 
-# Class for the Arc Consistency 3 Algorithm
+# Class for the Arc Consistency 3 (AC3) Algorithm
 class ac3:
 
 	# Constructor for the Algorithm object
@@ -155,14 +154,14 @@ class ac3:
 			for d in self.sudoku.domains:
 				self.sudoku.domains[d] = assignment[d] if len(d) > 1 else sudoku.domains[d]
 			if not assignment:
-				print("Error: No solution to Sudoku board.")
+				print("Error: No Solution Exists.")
 
 	# Backtrack function to reduce conflicts
 	def backtrack(self, assignment):
 		if len(assignment) == len(self.sudoku.variables):
 			return assignment
-		var = self.select_unassigned_variable(assignment)
-		for value in self.order_domain_values(var):
+		var = self.select_variable(assignment)
+		for value in self.order_domains(var):
 			if self.sudoku.consistent(assignment, var, value):
 				self.sudoku.assign(var, value, assignment)
 				result = self.backtrack(assignment)
@@ -171,14 +170,24 @@ class ac3:
 				self.sudoku.unassign(var, assignment)
 		return False
 
-	def select_unassigned_variable(self, assignment):
+	# Selects variables for backtracking
+	def select_variable(self, assignment):
 		unassigned = [x for x in self.sudoku.variables if x not in assignment]
 		return min(unassigned, key=lambda var: len(self.sudoku.domains[var]))
 
-	def order_domain_values(self, var):
+	# Orders the domains in a Sudoku board
+	def order_domains(self, var):
 		if(len(self.sudoku.domains[var]) == 1):
 			return self.sudoku.domains[var]
-		return sorted(self.sudoku.domains[var], key=lambda val: conflicts(self.sudoku, var, val))
+		return sorted(self.sudoku.domains[var], key=lambda val: self.conflicts(var, val))
+
+	# Returns the number of conflicts in a sudoku board
+	def conflicts(self, var, val):
+		count = 0
+		for x in self.sudoku.neighbors[var]:
+			if len(self.sudoku.domains[x]) > 1 and val in self.sudoku.domains[x]:
+				count += 1
+		return count
 
 	# Prints the completed Sudoku board
 	def print_solved_board(self):
@@ -194,6 +203,10 @@ class ac3:
 				string += '-------------------\n'
 			count += 1
 		print(string)
+
+#***************************************************
+#                 Main Function
+#***************************************************
 
 def main():
 
