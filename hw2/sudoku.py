@@ -62,7 +62,7 @@ class Sudoku:
 		self.domains = {}
 		self.constraints = []
 		self.neighbors = {}
-		self.pruned = {}
+		self.eliminated = {}
 		self.initialize(board)
 
 	# Initialies the variables of the sudoku object
@@ -73,10 +73,10 @@ class Sudoku:
 		for x, v in enumerate(self.variables):
 			if(game[x] == '0'):
 				self.domains[v] = list(range(1, 10))
-				self.pruned[v] = []
+				self.eliminated[v] = []
 			else:
 				self.domains[v] = [int(game[x])]
-				self.pruned[v] = [int(game[x])]
+				self.eliminated[v] = [int(game[x])]
 		self.constrain()
 		self.populate()
 
@@ -119,9 +119,9 @@ class Sudoku:
 	# Unassigns a value to a specific position
 	def unassign(self, var, assignment):
 		if var in assignment:
-			for (d, v) in self.pruned[var]:
+			for (d, v) in self.eliminated[var]:
 				self.domains[d].append(v)
-			self.pruned[var] = []
+			self.eliminated[var] = []
 			del assignment[var]
 
 	# Checks if domains will be altered due to an assignment
@@ -130,7 +130,7 @@ class Sudoku:
 			if neighbor not in assignment:
 				if value in self.domains[neighbor]:
 					self.domains[neighbor].remove(value)
-					self.pruned[var].append((neighbor, value))
+					self.eliminated[var].append((neighbor, value))
 
 #***************************************************
 #                   AC3 Class
