@@ -2,6 +2,10 @@ import os, sys
 import random
 import copy
 
+#***************************************************
+#				 Constant Variables
+#***************************************************
+
 INITIAL_POPULATION = 50
 NUM_GENERATIONS = 20
 CULL_PROBABILITY = 0.5
@@ -12,6 +16,7 @@ LOTTERY = 0.05
 #				 Helper Functions
 #***************************************************
 
+# Prints information about the initial state
 def initialize_problem(weights, values):
 	if(len(weights) != len(values)):
 		print("Incompatible Lists (weights & values).")
@@ -25,6 +30,7 @@ def initialize_problem(weights, values):
 	print("  Values:  " + value)
 	print("===== Starting Genetic Algorithm =====\n")
 
+# Prints information about the solution
 def finalize_problem(chromosome, fitness, weights):
 	print("\n===== Quitting Genetic Algorithm ====\n")
 	items = ""
@@ -36,9 +42,11 @@ def finalize_problem(chromosome, fitness, weights):
 	print("Optimal Items: "+ items)
 	print("Total Value of Items: " + str(fitness) + "\n")
 
+# Generates a random starting population
 def starting_population(amount, num_items):
 	return [rand_individual(num_items) for i in range(0, amount)]
 
+# Generates a random individual
 def rand_individual(num_items):
 	return [random.randint(0,1) for i in range(0, num_items)]
 
@@ -46,6 +54,7 @@ def rand_individual(num_items):
 #				  Item Class
 #***************************************************
 
+# Used to store information about each item
 class item:
 	def __init__(self, weight, value):
 		self.weight = weight
@@ -62,6 +71,7 @@ class knapsack():
 		for i in range(len(weights)):
 			self.knapsack.append(item(weights[i], values[i]))
 
+	# Solves the knapsack problem with a genetic algorithm
 	def generate(self):
 		best_chromosome = []
 		best_fitness = 0
@@ -77,6 +87,7 @@ class knapsack():
 			generation += 1
 		return best_chromosome, best_fitness
 
+	# Fitness function defining the fitness of each chromosome
 	def fitness(self, chromosome):
 		value, weight, index = 0, 0, 0
 		for i in chromosome:
@@ -88,10 +99,13 @@ class knapsack():
 			return 0
 		return value
 
+	# Mutates a given chromosome
 	def mutate(self, chromosome):
 		r = random.randint(0, len(chromosome) - 1)
 		chromosome[r] = (0 if chromosome[r] == 1 else 0)
 
+	# Evolves the population by culling part of the population
+	#	and creating children
 	def evolve_population(self, population):
 		parent_length = int(CULL_PROBABILITY * len(population))
 		parents = population[:parent_length]
