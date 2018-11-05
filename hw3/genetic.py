@@ -3,7 +3,7 @@ import random
 import copy
 
 INITIAL_POPULATION = 50
-NUM_GENERATIONS = 40
+NUM_GENERATIONS = 20
 CULL_PROBABILITY = 0.5
 MUTATION = 0.15
 LOTTERY = 0.05
@@ -107,7 +107,7 @@ class knapsack():
 		while len(children) < desired_length:
 			child1 = population[random.randint(0, len(parents)-1)]
 			child2 = population[random.randint(0, len(parents)-1)]
-			child = child1[:len(child1)/2] + child2[len(child1)/2:]
+			child = child1[:int(len(child1)/2)] + child2[int(len(child1)/2):]
 			if MUTATION > random.random():
 				self.mutate(child)
 			children.append(child)

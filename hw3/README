@@ -1,0 +1,26 @@
+/*********************************
+           A.I. PS 3
+*********************************/
+
+Usage:
+	Running:
+		~/$ python genetic.py
+
+To modify input:
+	To modify the input of the items in the knapsack, change the 'weights',
+	'values', and 'max_capacity' values directly under the start of the
+	main function.
+
+The knapsack problem has been solved in this program using a genetic
+algorithm. While it produces a good result to the problem posed,
+it does not always find an optimal solution. For example, in the test
+input, the optimal solution has a value of 20. However, this program
+will occasionally find solutions of value 17, or 18, or 19. Should
+this happen, run the program again and it will likely produce a
+result of 20.
+
+Resources Used:
+- Solving the 0-1 Knapsack Problem using Genetic Algorithms:
+	- http://www.sc.ehu.es/ccwbayes/docencia/kzmm/files/AG-knapsack.pdf
+- Animation of Simple Genetic Algorithm for Knapsack Problem:
+	- https://www.youtube.com/watch?v=9kbzMeEBvUY
