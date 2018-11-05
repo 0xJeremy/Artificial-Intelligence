@@ -4,6 +4,9 @@ import copy
 
 INITIAL_POPULATION = 50
 NUM_GENERATIONS = 40
+CULL_PROBABILITY = 0.5
+MUTATION = 0.15
+LOTTERY = 0.05
 
 #***************************************************
 #				 Helper Functions
@@ -56,8 +59,6 @@ class knapsack():
 	def __init__(self, weights, values, max_capacity):
 		self.max_capacity = max_capacity
 		self.knapsack = []
-
-		#CLEAN UP LOOP... I dislike it
 		for i in range(len(weights)):
 			self.knapsack.append(item(weights[i], values[i]))
 
@@ -92,35 +93,26 @@ class knapsack():
 		chromosome[r] = (0 if chromosome[r] == 1 else 0)
 
 	def evolve_population(self, population):
-		cull_prob = 0.5
-		mutation_chance = 0.15
-		lottery = 0.05
-
-		parent_length = int(cull_prob * len(population))
-		self.parents = population[:parent_length]
+		parent_length = int(CULL_PROBABILITY * len(population))
+		parents = population[:parent_length]
 		nonparents = population[parent_length:]
-
-		for np in nonparents:
-			if lottery > random.random():
-				self.parents.append(np)
-
-		for p in self.parents:
-			if mutation_chance > random.random():
-				self.mutate(p)
-
+		for i in nonparents:
+			if LOTTERY > random.random():
+				parents.append(i)
+		for i in parents:
+			if MUTATION > random.random():
+				self.mutate(i)
 		children = []
-		desired_length = len(population) - len(self.parents)
+		desired_length = len(population) - len(parents)
 		while len(children) < desired_length:
-			male = population[random.randint(0,len(self.parents)-1)]
-			female = population[random.randint(0,len(self.parents)-1)]
-			half = len(male)/2
-			child = male[:half] + female[half:]
-			if mutation_chance > random.random():
+			child1 = population[random.randint(0, len(parents)-1)]
+			child2 = population[random.randint(0, len(parents)-1)]
+			child = child1[:len(child1)/2] + child2[len(child1)/2:]
+			if MUTATION > random.random():
 				self.mutate(child)
 			children.append(child)
-
-		self.parents.extend(children)
-		return self.parents
+		parents.extend(children)
+		return parents
 	
 #***************************************************
 #				 Main Function
