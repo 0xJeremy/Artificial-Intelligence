@@ -6,11 +6,14 @@ import copy
 #				 Constant Variables
 #***************************************************
 
-INITIAL_POPULATION = 50
-NUM_GENERATIONS = 20
+INITIAL_POPULATION = 60
+NUM_GENERATIONS = 30
 CULL_PROBABILITY = 0.5
 MUTATION = 0.15
 LOTTERY = 0.05
+
+# Change here for more generational information
+DISPLAY_MORE_INFO = False
 
 #***************************************************
 #				 Helper Functions
@@ -32,7 +35,7 @@ def initialize_problem(weights, values):
 
 # Prints information about the solution
 def finalize_problem(chromosome, fitness, weights):
-	print("\n===== Quitting Genetic Algorithm ====\n")
+	print("\n===== Quitting Genetic Algorithm =====\n")
 	items = ""
 	for i in range(len(chromosome)):
 		if(chromosome[i] == 1):
@@ -82,7 +85,11 @@ class knapsack():
 			if(self.fitness(population[0]) > best_fitness):
 				best_fitness = self.fitness(population[0])
 				best_chromosome = copy.deepcopy(population[0])
-			print("Gen " + str(i+1) + ": "+ str(population[0]))
+			if(not DISPLAY_MORE_INFO):
+				print("Gen " + str(i+1) + ": "+ str(population[0]) + ", fit: " + str(self.fitness(population[0])))
+			else:
+				for j in range(len(population)):
+					print("Generation " + str(i+1) + ", Chromosome " + str(j+1) + ": " + str(population[j]) + ", fit: " + str(self.fitness(population[j])))
 			population = self.evolve_population(population)
 			generation += 1
 		return best_chromosome, best_fitness

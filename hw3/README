@@ -10,6 +10,17 @@ To modify input:
 	To modify the input of the items in the knapsack, change the 'weights',
 	'values', and 'max_capacity' values directly under the start of the
 	main function.
+To show more information:
+	By default the program only shows the most fit chromosome from each
+	generation. To change this and print every chromosome, modify the 
+	variable 'DISPLAY_MORE_INFO' on line 16.
+To optimize algorithm:
+	At the top of the program under "Constant Variables" is a list of
+	constants used in the program. Changing these will modify the
+	success of the algorithm. These values have been chosen because
+	they appear to optimize the result of the genetic algorithm, but
+	may not be fully optimize. Changing these values may increase
+	the success of the genetic algorithm.
 
 The knapsack problem has been solved in this program using a genetic
 algorithm. While it produces a good result to the problem posed,
