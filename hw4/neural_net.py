@@ -122,6 +122,20 @@ class NeuralNetwork():
 		print(" 100 % trained...")
 		print("=====  Done Training  =====\n")
 
+	def validate(self):
+		pred = mat_mat(self.testx, self.w, self.b)
+		pred_2 = mat_mat(pred, self.w2, self.b)
+		prediction = []
+		for x in pred_2:
+			prediction.append(max(enumerate(x), key=lambda x:x[1])[0])
+		correct = 0
+		for i in range(len(pred_2)):
+			if(prediction[i] == self.testy[i]):
+				correct += 1
+		percent = float(correct) / len(pred_2) * 100
+		print("Neural Network Accuracy: %f%%\n" % percent)
+
+
 	def query(self):
 		y = []
 		y.append(float(input("Sepal Length: ")))
@@ -134,11 +148,11 @@ class NeuralNetwork():
 		pred_2 = mat_mat(pred, self.w2, self.b)
 
 		if(max(pred_2) == pred_2[0]):
-			print("\nPredicted: Iris-setosa")
+			print("\nPrediction: Iris-setosa")
 		elif(max(pred_2) == pred_2[1]):
-			print("\nPrdicted: Iris-versicolor")
+			print("\nPrediction: Iris-versicolor")
 		else:
-			print("\nPredicted: Iris-virginica")
+			print("\nPrediction: Iris-virginica")
 
 #***************************************************
 #				 Main Function
@@ -147,6 +161,7 @@ class NeuralNetwork():
 def main():
 	iris = NeuralNetwork()
 	iris.train()
+	iris.validate()
 	iris.query()
 
 
