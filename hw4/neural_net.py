@@ -87,8 +87,7 @@ class NeuralNetwork():
 	def train(self):
 		print("\n===== Training Started =====")
 		for e in range(EPOCH):
-			cost_total = 0
-			for idx, x in enumerate(self.tx):
+			for y, x in enumerate(self.tx):
 				
 				h_1 = vec_mat(x, self.w, self.b)
 				X_1 = sigmoid(h_1)
@@ -96,7 +95,7 @@ class NeuralNetwork():
 				X_2 = sigmoid(h_2)
 				
 				target = [0, 0, 0]
-				target[int(self.ty[idx])] = 1
+				target[int(self.ty[y])] = 1
 
 				delta_2 = []
 				for j in range(NEURON[2]):
@@ -119,10 +118,11 @@ class NeuralNetwork():
 			if(e % 100 == 0):
 				x = float(e) / EPOCH * 100
 				print("%4d %% trained..." % x)
+
 		print(" 100 % trained...")
 		print("=====  Done Training  =====\n")
 
-	def test(self):
+	def query(self):
 		y = []
 		y.append(float(input("Sepal Length: ")))
 		y.append(float(input("Sepal Width:  ")))
@@ -147,7 +147,7 @@ class NeuralNetwork():
 def main():
 	iris = NeuralNetwork()
 	iris.train()
-	iris.test()
+	iris.query()
 
 
 if __name__ == '__main__':
