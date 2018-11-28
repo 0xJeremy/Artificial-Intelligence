@@ -2,14 +2,13 @@ import csv
 import random
 import math
 
-random.seed(random.random())
-
 #***************************************************
 #				 Parameter Variables
 #***************************************************
 
+random.seed(random.random())
 PATH = 'iris.data'
-ALPHA = 0.005
+ALPHA = 0.0075
 EPOCH = 400
 NEURON = [4, 8, 3]
 
@@ -63,7 +62,7 @@ class NeuralNetwork():
 
 		random.shuffle(dataset)
 		datatrain = dataset[:int(len(dataset) * 0.8)]
-		datatest = dataset[int(len(dataset) * 0.8):]
+		datatest = dataset[int(len(dataset) * 0.6):]
 
 		print("Loading Finished.")
 
@@ -120,7 +119,7 @@ class NeuralNetwork():
 				print("%4d %% trained..." % x)
 
 		print(" 100 % trained...")
-		print("=====  Done Training  =====\n")
+		print("===== Training Finished =====\n")
 
 	def validate(self):
 		pred = mat_mat(self.testx, self.w, self.b)
@@ -133,7 +132,7 @@ class NeuralNetwork():
 			if(prediction[i] == self.testy[i]):
 				correct += 1
 		percent = float(correct) / len(pred_2) * 100
-		print("Neural Network Accuracy: %f%%\n" % percent)
+		print("Neural Network Accuracy: %f %%\n" % percent)
 
 
 	def query(self):
