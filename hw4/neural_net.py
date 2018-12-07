@@ -6,6 +6,8 @@ import math
 #				 Parameter Variables
 #***************************************************
 
+# Modify the "PATH" variable to set the dataset location
+
 random.seed(random.random())
 PATH = 'iris.data'
 ALPHA = 0.0075
@@ -16,6 +18,7 @@ NEURON = [4, 8, 3]
 #				 Helper Functions
 #***************************************************
 
+# Performs multiplication of two matrices. Used as a helper function.
 def mat_mat(m1, m2, b):
 	x = [[0 for i in range(len(m2[0]))] for i in range(len(m1))]    
 	for i in range(len(m1)):
@@ -25,6 +28,7 @@ def mat_mat(m1, m2, b):
 			x[i][j] += b[j]
 	return x
 
+# Performs multiplication of a vector and matrix. Used as a helper function.
 def vec_mat(v1, m2, b):
 	x = [0 for i in range(len(m2[0]))]
 	for j in range(len(m2[0])):
@@ -33,6 +37,7 @@ def vec_mat(v1, m2, b):
 			x[j] += b[j]
 	return x
 
+# Performs multiplication of a matrix and vector. Used as a helper function.
 def mat_vec(m1, v2):
 	x = [0 for i in range(len(m1))]
 	for i in range(len(m1)):
@@ -40,6 +45,7 @@ def mat_vec(m1, v2):
 			x[i] += m1[i][j] * v2[j]
 	return x
 
+# The sigmoid function, used as an activation function in the Neural Network.
 def sigmoid(x):
 	for i in range(len(x)):
 		x[i] = 1 / (1 + math.exp(-x[i]))
@@ -50,6 +56,9 @@ def sigmoid(x):
 #***************************************************
 
 class NeuralNetwork():
+
+	# The initial loading of data, and setting of class variables.
+	# This function runs on the creation of a new neural network.
 	def __init__(self):
 		print("Loading Data...")
 
@@ -83,6 +92,8 @@ class NeuralNetwork():
 			for j in range(NEURON[2]):
 				self.w2[i][j] = 2 * random.random() - 1
 
+	# This function trains the neural network.
+	# It can be called multiple times to retrain the network.
 	def train(self):
 		print("\n===== Training Started =====")
 		for e in range(EPOCH):
@@ -121,6 +132,9 @@ class NeuralNetwork():
 		print(" 100 % trained...")
 		print("===== Training Finished =====\n")
 
+	# This function is used to determine the accuracy of the trained
+	# neural network. It will alert the user if the network has trained
+	# poorly.
 	def validate(self):
 		pred = mat_mat(self.testx, self.w, self.b)
 		pred_2 = mat_mat(pred, self.w2, self.b)
@@ -133,8 +147,13 @@ class NeuralNetwork():
 				correct += 1
 		percent = float(correct) / len(pred_2) * 100
 		print("Neural Network Accuracy: %f %%\n" % percent)
+		if(percent < 70):
+			print("It appears the Neural Network has a low accuraccy.")
+			print("If you would like to retrain the network, please run the program again.\n")
 
-
+	# This function is used to get input from the user, and
+	# will classify the type of flower they are describing.
+	# It can be called multiple times to allow for multiple queries.
 	def query(self):
 		y = []
 		y.append(float(input("Sepal Length: ")))

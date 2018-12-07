@@ -1,0 +1,22 @@
+/*********************************
+           A.I. PS 4
+*********************************/
+
+Usage:
+	Running:
+		~/$ python neural_net.py
+
+To set data path:
+	In the 'Parameter Variables' section at the top of the program, modify the 
+	PATH variable to set the location of the iris dataset.
+
+To optimize training:
+	To potentially optimize the training of the neural network, change the
+	random seed in the 'Paramater Variables' section at the top of the
+	program. Some seeds perform significantly better than others.
+
+Other Notes:
+	This program has been proven to train with a 98% degree of accuracy.
+	That said, it has also shown to train as poorly as <40% accuracy. If the 
+	program trains with an accuracy under 70%, a prompt will appear informing
+	the user and ask if they wish to train the set again.
