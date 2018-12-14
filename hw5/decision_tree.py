@@ -29,8 +29,8 @@ class Roomba():
 			for i in range(20):
 				# sleep(1)
 				if(i % 5 == 0):
-					print("Spot Cleaning           . . .   RUNNING (" + str(100 * i / 20) + "%)")
-			print("Spot Cleaning           . . .   \033[1mSUCCEEDED\033[0m")
+					print("Spot Cleaning           . . .   RUNNING (%d%%)" % (100 * i / 20))
+			print("Spot Cleaning           . . .   \033[1mSUCCEEDED\033[0m\n")
 			BLACKBOARD["SPOT"] = False
 		else:
 			print("Spot                    . . .   \033[1mFAILED\033[0m")
@@ -44,12 +44,11 @@ class Roomba():
 						# sleep(1)
 						if(i % 5 == 0):
 							print("Dusty Spot Cleaning     . . .   RUNNING (" + str(100 * i / 35) + "%)")
-					print("Dusty Spot Cleaning     . . .   \033[1mSUCCEEDED\033[0m")
+					print("Dusty Spot Cleaning     . . .   \033[1mSUCCEEDED\033[0m\n")
 					BLACKBOARD["DUSTY_SPOT"] = False
-				# print("General Cleaning        . . .   \033[1mSUCCEEDED\033[0m")
+				print("General Cleaning        . . .   \033[1mSUCCEEDED\033[0m [Battery: %d%%]" % BLACKBOARD["BATTERY_LEVEL"])
 				BLACKBOARD["BATTERY_LEVEL"] -= 5
-				print("General Cleaning [" + str(BLACKBOARD["BATTERY_LEVEL"]) + "]   . . .   \033[1mSUCCEEDED\033[0m")
-			print("General                 . . .   \033[1mSUCCEEDED\033[0m")
+			print("General                 . . .   \033[1mSUCCEEDED\033[0m\n")
 			BLACKBOARD["GENERAL"] = False
 		else:
 			print("General Cleaning       . . .   \033[1mFAILED\033[0m")
