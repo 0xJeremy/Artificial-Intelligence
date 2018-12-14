@@ -1,3 +1,6 @@
+import sys, os
+from time import sleep
+
 BLACKBOARD = {"BATTERY_LEVEL": 100,
 			  "SPOT": True,
 			  "GENERAL": True,
@@ -22,23 +25,23 @@ class Roomba():
 			for i in range(20):
 				sleep(1)
 				if(i % 5 == 0):
-					print("Cleaning Spot " + (i / 20) + "%")
+					print("Cleaning Spot " + str(100 * i / 20) + "%")
 			BLACKBOARD["SPOT"] = False
 
 	def clean_until_fail(self):
-		if(BLACKBOARD["GENERAL"])
+		if(BLACKBOARD["GENERAL"]):
 			while(BLACKBOARD["BATTERY_LEVEL"] > 30):
 				if(BLACKBOARD["DUSTY_SPOT"]):
 					for i in range(35):
-					sleep(1)
-					if(i % 5 == 0):
-						print("Cleaning Dusty Spot " + (i / 35) + "%")
+						sleep(1)
+						if(i % 5 == 0):
+							print("Cleaning Dusty Spot " + str(100 * i / 35) + "%")
 					BLACKBOARD["DUSTY_SPOT"] = False
 				BLACKBOARD["BATTERY_LEVEL"] -= 5
 			BLACKBOARD["GENERAL"] = False
 
 
-main():
+def main():
 	cleaner = Roomba()
 
 
