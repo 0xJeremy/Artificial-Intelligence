@@ -8,6 +8,7 @@ BLACKBOARD = {"BATTERY_LEVEL": 100,
 			  "HOME_PATH": [0, 1, 2, 3]}
 
 class Roomba():
+	print("\033[1m======== Initializing Roomba ========\033[0m\n")
 	def __init__(self):
 		while(True):
 			self.battery_1()
@@ -17,9 +18,10 @@ class Roomba():
 	def battery_1(self):
 		if(BLACKBOARD["BATTERY_LEVEL"] < 30):
 			BLACKBOARD["HOME_PATH"] = [0, 1, 2, 3]
-			print("Home Path Set")
-			print("Going Home")
-			print("Docking")
+			print("Find Home               . . .   \033[1mSUCCEEDED\033[0m")
+			print("Go Home                 . . .   \033[1mSUCCEEDED\033[0m")
+			print("Docking                 . . .   \033[1mSUCCEEDED\033[0m")
+			print("\n\033[1m======== Roomba Powering Down ========\033[0m")
 			exit(1)
 
 	def spot_check(self):
@@ -27,23 +29,30 @@ class Roomba():
 			for i in range(20):
 				# sleep(1)
 				if(i % 5 == 0):
-					print("Cleaning Spot " + str(100 * i / 20) + "%")
-			print("Cleaning Spot 100%")
+					print("Spot Cleaning           . . .   RUNNING (" + str(100 * i / 20) + "%)")
+			print("Spot Cleaning           . . .   \033[1mSUCCEEDED\033[0m")
 			BLACKBOARD["SPOT"] = False
+		else:
+			print("Spot                    . . .   \033[1mFAILED\033[0m")
 
 	def clean_until_fail(self):
 		if(BLACKBOARD["GENERAL"]):
+			print("General Cleaning        . . .   RUNNING")
 			while(BLACKBOARD["BATTERY_LEVEL"] >= 30):
 				if(BLACKBOARD["DUSTY_SPOT"]):
 					for i in range(35):
 						# sleep(1)
 						if(i % 5 == 0):
-							print("Cleaning Dusty Spot " + str(100 * i / 35) + "%")
-					print("Cleaning Dusty Spot 100%")
+							print("Dusty Spot Cleaning     . . .   RUNNING (" + str(100 * i / 35) + "%)")
+					print("Dusty Spot Cleaning     . . .   \033[1mSUCCEEDED\033[0m")
 					BLACKBOARD["DUSTY_SPOT"] = False
+				# print("General Cleaning        . . .   \033[1mSUCCEEDED\033[0m")
 				BLACKBOARD["BATTERY_LEVEL"] -= 5
-				print("Battery: " + str(BLACKBOARD["BATTERY_LEVEL"]))
+				print("General Cleaning [" + str(BLACKBOARD["BATTERY_LEVEL"]) + "]   . . .   \033[1mSUCCEEDED\033[0m")
+			print("General                 . . .   \033[1mSUCCEEDED\033[0m")
 			BLACKBOARD["GENERAL"] = False
+		else:
+			print("General Cleaning       . . .   \033[1mFAILED\033[0m")
 
 
 def main():
