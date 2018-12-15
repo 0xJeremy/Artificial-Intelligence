@@ -5,11 +5,26 @@ BLACKBOARD = {"BATTERY_LEVEL": 100,
 			  "SPOT": True,
 			  "GENERAL": True,
 			  "DUSTY_SPOT": True,
-			  "HOME_PATH": [0, 1, 2, 3]}
+			  "HOME_PATH": "PATH_TO_DOCKING_STATION"}
+
+def sprint(operation, state, battery):
+	operation = operation.ljust(24)
+	print(operation, end = '\r')
+	sleep(0.3)
+	print(operation + ".", end = '\r')
+	sleep(0.3)
+	print(operation + ". .", end = '\r')
+	sleep(0.3)
+	print(operation + ". . .", end = '\r')
+	sleep(0.3)
+	if(battery):
+		print(operation + ". . .   \033[1m" + state + "\033[0m [Battery: %d%%]" % BLACKBOARD["BATTERY_LEVEL"])
+	else:
+		print(operation + ". . .   \033[1m" + state + "\033[0m")
 
 class Roomba():
-	print("\033[1m======== Initializing Roomba ========\033[0m\n")
 	def __init__(self):
+		print("\033[1m======== Initializing Roomba ========\033[0m\n")
 		while(True):
 			self.battery_1()
 			self.spot_check()
@@ -17,41 +32,41 @@ class Roomba():
 
 	def battery_1(self):
 		if(BLACKBOARD["BATTERY_LEVEL"] < 30):
-			BLACKBOARD["HOME_PATH"] = [0, 1, 2, 3]
-			print("Find Home               . . .   \033[1mSUCCEEDED\033[0m")
-			print("Go Home                 . . .   \033[1mSUCCEEDED\033[0m")
-			print("Docking                 . . .   \033[1mSUCCEEDED\033[0m")
-			print("\n\033[1m======== Roomba Powering Down ========\033[0m")
-			exit(1)
+			sprint("Find Home", "SUCCEEDED", False)
+			sprint("Go Home", "SUCCEEDED", False)
+			sprint("Docking", "SUCCEEDED", False)
+			BLACKBOARD["BATTERY_LEVEL"] = 100
 
 	def spot_check(self):
 		if(BLACKBOARD["SPOT"]):
 			for i in range(20):
 				# sleep(1)
 				if(i % 5 == 0):
-					print("Spot Cleaning           . . .   RUNNING (%d%%)" % (100 * i / 20))
-			print("Spot Cleaning           . . .   \033[1mSUCCEEDED\033[0m\n")
+					print("Spot Cleaning           . . .   RUNNING (%2d%%)" % (100 * i / 20))
+			sprint("Spot Cleaning", "SUCCEEDED", False)
+			BLACKBOARD["BATTERY_LEVEL"] -= 5
 			BLACKBOARD["SPOT"] = False
 		else:
-			print("Spot                    . . .   \033[1mFAILED\033[0m")
+			sprint("Spot", "FAILED", False)
 
 	def clean_until_fail(self):
 		if(BLACKBOARD["GENERAL"]):
-			print("General Cleaning        . . .   RUNNING")
+			sprint("General Cleaning", "RUNNING", False)
 			while(BLACKBOARD["BATTERY_LEVEL"] >= 30):
 				if(BLACKBOARD["DUSTY_SPOT"]):
 					for i in range(35):
-						# sleep(1)
+						sleep(1)
 						if(i % 5 == 0):
-							print("Dusty Spot Cleaning     . . .   RUNNING (" + str(100 * i / 35) + "%)")
-					print("Dusty Spot Cleaning     . . .   \033[1mSUCCEEDED\033[0m\n")
+							print("Dusty Spot Cleaning     . . .   RUNNING (%2d%%)" % (100 * i / 35))
+						BLACKBOARD["BATTERY_LEVEL"] -= 1
+					sprint("Dusty Spot CLeaning", "SUCCEEDED", False)
 					BLACKBOARD["DUSTY_SPOT"] = False
-				print("General Cleaning        . . .   \033[1mSUCCEEDED\033[0m [Battery: %d%%]" % BLACKBOARD["BATTERY_LEVEL"])
+				# print("General Cleaning        . . .   \033[1mSUCCEEDED\033[0m [Battery: %d%%]" % BLACKBOARD["BATTERY_LEVEL"])
 				BLACKBOARD["BATTERY_LEVEL"] -= 5
-			print("General                 . . .   \033[1mSUCCEEDED\033[0m\n")
+				sprint("General", "SUCCEEDED", True)
 			BLACKBOARD["GENERAL"] = False
 		else:
-			print("General Cleaning       . . .   \033[1mFAILED\033[0m")
+			sprint("General Cleaning", "FAILED", False)
 
 
 def main():
