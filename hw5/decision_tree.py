@@ -2,14 +2,21 @@ import sys, os
 from time import sleep
 import random
 
+#********************************************************************
+#						Initial Parameters
+#********************************************************************
+
 BLACKBOARD = {"BATTERY_LEVEL": 100,
 			  "SPOT": True,
 			  "GENERAL": True,
 			  "DUSTY_SPOT": True,
 			  "HOME_PATH": "PATH_TO_DOCKING_STATION"}
 
+#********************************************************************
+#						Helper Functions
+#********************************************************************
+
 def randomize_environment():
-	BLACKBOARD["BATTERY_LEVEL"] = random.randint(80, 100)
 	BLACKBOARD["SPOT"] = bool(random.getrandbits(1))
 	BLACKBOARD["GENERAL"] = bool(random.getrandbits(1))
 	BLACKBOARD["DUSTY_SPOT"] = bool(random.getrandbits(1))
@@ -35,6 +42,10 @@ def running(operation, time):
 		if(i % 5 == 0):
 			print(operation + ". . .   RUNNING (%2d%%)" % (100 * i / time))
 
+#********************************************************************
+#						Roomba Class
+#********************************************************************
+
 class Roomba():
 	def __init__(self):
 		print("\033[1m======== Initializing Roomba ========\033[0m\n")
@@ -51,7 +62,7 @@ class Roomba():
 			sprint("Go Home", "SUCCEEDED", False)
 			sprint("Docking", "SUCCEEDED", False)
 			print()
-			BLACKBOARD["BATTERY_LEVEL"] = 100
+			BLACKBOARD["BATTERY_LEVEL"] = random.randint(80, 100)
 
 	def spot_check(self):
 		if(BLACKBOARD["SPOT"]):
@@ -79,6 +90,9 @@ class Roomba():
 			sprint("General Cleaning", "FAILED", False)
 			print()
 
+#********************************************************************
+#						Main Function
+#********************************************************************
 
 def main():
 	cleaner = Roomba()
