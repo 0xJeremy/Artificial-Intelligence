@@ -1,0 +1,15 @@
+/*********************************
+           A.I. PS 5
+*********************************/
+
+Usage:
+	Running:
+		~/$ python decision_tree.py
+
+To change Blackboard:
+To alter the initial state of the blackboard, alter the BLACKBOARD variable in
+the "Initial Parameters" section. The blackboard has random variables assigned
+after each cleaning "cycle". It also charges to a random amount, and discharges
+at an inconsistent rate.
+
+This progra uses the IF-THEN-ELSE structure, not a NodeType structure.

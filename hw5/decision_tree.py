@@ -67,12 +67,14 @@ class Roomba():
 			sprint("Docking", "SUCCEEDED", False)
 			print()
 			BLACKBOARD["BATTERY_LEVEL"] = random.randint(80, 100)
+			sprint("Charging", "DONE", True)
+			print()
 
 	# Performs a spot cleaning, if necessary
 	def spot_check(self):
 		if(BLACKBOARD["SPOT"]):
 			running("Spot Cleaning", 20)
-			sprint("Spot Cleaning", "SUCCEEDED", False)
+			sprint("Spot Cleaning", "DONE", False)
 			print()
 			BLACKBOARD["SPOT"] = False
 		else:
@@ -88,9 +90,10 @@ class Roomba():
 					running("Dusty Spot Cleaning", 35)
 					sprint("Dusty Spot CLeaning", "SUCCEEDED", False)
 					print()
-					BLACKBOARD["DUSTY_SPOT"] = False
-				BLACKBOARD["BATTERY_LEVEL"] -= random.randint(1, 10)
-				sprint("General Cleaning", "SUCCEEDED", True)
+				else:
+					sprint("Dusty Spot Cleaning", "FAILED", False)
+					BLACKBOARD["BATTERY_LEVEL"] -= random.randint(1, 10)
+				sprint("General Cleaning", "DONE", True)
 			BLACKBOARD["GENERAL"] = False
 		else:
 			sprint("General Cleaning", "FAILED", False)
